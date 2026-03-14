@@ -28,6 +28,13 @@
 - This repository does **not** include a committed live production URL yet.
 - After deploying on Vercel, the live URL will be shown in the Vercel dashboard (typically `https://<project-name>.vercel.app`).
 
+
+## GitHub Pages option (static demo)
+- A GitHub Actions workflow is included at `.github/workflows/deploy-github-pages.yml` and runs `npm run build:github-pages`.
+- Enable **Settings → Pages → Source: GitHub Actions**.
+- After a successful run on `main`, URL format is `https://<github-username>.github.io/<repository-name>/`.
+- This mode is static-export only and uses demo-mode records; API routes are excluded during the Pages build step.
+
 ## Runtime behavior
 - With DB/Redis configured: full pipeline mode (persistent storage + queued refresh).
 - Without DB/Redis: demo mode using built-in seed-like mock records (frontend remains functional).

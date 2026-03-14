@@ -25,7 +25,7 @@
   --map-link-text: #172033;
 }
 
-[data-theme='dark'] {
+.dark {
   color-scheme: dark;
   --bg-0: #090f1a;
   --bg-1: #121a2c;
@@ -48,7 +48,7 @@
   --map-link-text: #edf2ff;
 }
 
-[data-theme='aurora'] {
+.aurora {
   color-scheme: dark;
   --bg-0: #061018;
   --bg-1: #0a1f2d;
@@ -71,7 +71,7 @@
   --map-link-text: #e8fcff;
 }
 
-[data-theme='sunset'] {
+.sunset {
   color-scheme: light;
   --bg-0: #fff4ed;
   --bg-1: #ffe6d8;
@@ -94,7 +94,7 @@
   --map-link-text: #3a1e1a;
 }
 
-[data-theme='forest'] {
+.forest {
   color-scheme: dark;
   --bg-0: #0a1510;
   --bg-1: #14251b;

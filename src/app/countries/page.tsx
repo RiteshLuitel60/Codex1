@@ -21,9 +21,10 @@ export default async function CountriesPage() {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-3">
-        <h1 className="text-4xl font-semibold">Country directory</h1>
-        <p className="text-slate-500 dark:text-slate-300">
+      <header className="surface-card rounded-3xl p-6 md:p-8">
+        <p className="text-xs uppercase tracking-[0.26em] text-muted">Global Registry</p>
+        <h1 className="mt-2 font-display text-4xl text-[color:var(--text-1)] md:text-5xl">Country Directory</h1>
+        <p className="mt-3 text-muted">
           Searchable directory with current leadership, confidence scores, and verification recency.
         </p>
       </header>

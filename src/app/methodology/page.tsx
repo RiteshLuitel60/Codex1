@@ -20,11 +20,14 @@ const items = [
 export default function MethodologyPage() {
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-5xl leading-tight text-ink dark:text-slate-100">Methodology & Verification Policy</h1>
+      <header className="surface-card rounded-3xl p-6 md:p-8">
+        <p className="text-xs uppercase tracking-[0.26em] text-muted">Rules Engine</p>
+        <h1 className="mt-2 font-display text-5xl leading-tight text-[color:var(--text-1)]">Methodology & Verification Policy</h1>
+      </header>
       {items.map((item) => (
-        <section key={item.title} className="glass rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-ink dark:text-slate-100">{item.title}</h2>
-          <p className="mt-2 text-slate-700 dark:text-slate-300">{item.body}</p>
+        <section key={item.title} className="surface-card rounded-2xl p-6">
+          <h2 className="text-xl font-semibold text-[color:var(--text-1)]">{item.title}</h2>
+          <p className="mt-2 text-muted">{item.body}</p>
         </section>
       ))}
     </div>

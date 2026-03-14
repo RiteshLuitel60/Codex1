@@ -24,6 +24,10 @@
 4. Deploy from `main` branch.
 5. Configure a cron job for `POST /api/refresh` every 12h in Vercel cron.
 
+## Deployment URL
+- This repository does **not** include a committed live production URL yet.
+- After deploying on Vercel, the live URL will be shown in the Vercel dashboard (typically `https://<project-name>.vercel.app`).
+
 ## Runtime behavior
 - With DB/Redis configured: full pipeline mode (persistent storage + queued refresh).
 - Without DB/Redis: demo mode using built-in seed-like mock records (frontend remains functional).

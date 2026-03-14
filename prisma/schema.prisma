@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SourceType {
+  OFFICIAL_GOVERNMENT
+  INTERGOVERNMENTAL
+  TRUSTED_MEDIA
+  ACADEMIC
+}
+
+enum ConflictStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+}
+
+model Country {
+  id               String                 @id @default(cuid())
+  iso2             String                 @unique
+  iso3             String                 @unique
+  name             String
+  slug             String                 @unique
+  region           String
+  governmentType   String
+  flagEmoji        String
+  profile          String
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  leaderAssignments LeaderAssignment[]
+  verificationSnapshots VerificationSnapshot[]
+}
+
+model Leader {
+  id               String             @id @default(cuid())
+  fullName         String
+  party            String?
+  profile          String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  assignments      LeaderAssignment[]
+}
+
+model LeaderAssignment {
+  id               String             @id @default(cuid())
+  countryId        String
+  leaderId         String
+  role             String
+  officialTitle    String
+  assumedOfficeAt  DateTime
+  predecessor      String?
+  isCurrent        Boolean            @default(true)
+  sourceConfidence Float              @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  country          Country            @relation(fields: [countryId], references: [id])
+  leader           Leader             @relation(fields: [leaderId], references: [id])
+  citations        Citation[]
+
+  @@index([countryId, isCurrent])
+}
+
+model Source {
+  id                 String            @id @default(cuid())
+  domain             String            @unique
+  name               String
+  type               SourceType
+  baseCredibility    Float
+  recencyWeight      Float             @default(1)
+  officialSignal     Float             @default(0)
+  independentSignal  Float             @default(0)
+  transparencySignal Float             @default(0)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  citations          Citation[]
+}
+
+model Citation {
+  id                  String            @id @default(cuid())
+  leaderAssignmentId  String
+  sourceId            String
+  url                 String
+  excerpt             String
+  publishedAt         DateTime?
+  retrievedAt         DateTime          @default(now())
+  trustScore          Float
+  leaderAssignment    LeaderAssignment  @relation(fields: [leaderAssignmentId], references: [id])
+  source              Source            @relation(fields: [sourceId], references: [id])
+
+  @@index([leaderAssignmentId])
+}
+
+model VerificationSnapshot {
+  id                String           @id @default(cuid())
+  countryId         String
+  capturedAt        DateTime         @default(now())
+  confidenceScore   Float
+  conflictDetected  Boolean
+  notes             String?
+  payload           Json
+  country           Country          @relation(fields: [countryId], references: [id])
+}
+
+model Conflict {
+  id                String           @id @default(cuid())
+  countryId         String
+  role              String
+  summary           String
+  evidence          Json
+  status            ConflictStatus   @default(OPEN)
+  confidenceDelta   Float
+  createdAt         DateTime         @default(now())
+  resolvedAt        DateTime?
+}

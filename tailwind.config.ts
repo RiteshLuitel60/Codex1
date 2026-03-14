@@ -5,21 +5,28 @@ const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-space-grotesk)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['var(--font-dm-serif)', 'ui-serif', 'Georgia', 'serif']
+      },
       colors: {
-        midnight: '#05070c',
-        mist: '#f5f7ff',
-        aurora: {
-          1: '#8d7bff',
-          2: '#4fb4ff',
-          3: '#64ffc2'
-        }
+        midnight: '#0b111b',
+        mist: '#f6f2ea',
+        stonewash: '#ded6c8',
+        brass: '#b07b34',
+        lagoon: '#0f766e',
+        ember: '#a6361d',
+        ink: '#1a2433'
       },
       boxShadow: {
-        glass: '0 10px 40px rgba(0,0,0,0.28)'
+        glass: '0 18px 50px rgba(9, 14, 20, 0.18)',
+        bloom: '0 12px 36px rgba(176, 123, 52, 0.22)'
       },
       backgroundImage: {
         'hero-gradient':
-          'radial-gradient(circle at 20% 20%, rgba(141,123,255,0.18), transparent 38%), radial-gradient(circle at 80% 30%, rgba(79,180,255,0.16), transparent 34%), radial-gradient(circle at 50% 80%, rgba(100,255,194,0.10), transparent 45%)'
+          'radial-gradient(circle at 14% 16%, rgba(176,123,52,0.28), transparent 40%), radial-gradient(circle at 82% 20%, rgba(15,118,110,0.25), transparent 34%), radial-gradient(circle at 45% 86%, rgba(166,54,29,0.18), transparent 46%)',
+        'mesh-gradient':
+          'linear-gradient(145deg, rgba(246,242,234,0.84) 0%, rgba(236,228,214,0.7) 38%, rgba(225,241,236,0.66) 100%)'
       }
     }
   },

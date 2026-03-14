@@ -1,16 +1,10 @@
 import { notFound } from 'next/navigation';
 import { SourcePanel } from '@/components/source-panel';
 import { Timeline } from '@/components/timeline';
-import { getCountries, getCountryBySlug } from '@/lib/data';
+import { getCountryBySlug } from '@/lib/data';
 import { formatConfidence } from '@/lib/utils';
 
-
-export async function generateStaticParams() {
-  const countries = await getCountries();
-  return countries.map((country) => ({ slug: country.slug }));
-}
-
-export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
 
 export default async function CountryPage({ params }: { params: { slug: string } }) {
   const country = await getCountryBySlug(params.slug);

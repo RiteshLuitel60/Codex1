@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { mockSources } from '@/lib/mock-data';
+import { getLiveSources } from '@/lib/live-data';
 import { isDatabaseConfigured } from '@/lib/runtime';
 import { scoreSource } from '@/lib/source-ranking';
 
 export async function GET() {
   const sources = isDatabaseConfigured()
     ? await prisma.source.findMany({ orderBy: { baseCredibility: 'desc' } })
-    : mockSources;
+    : getLiveSources();
 
   const ranked = sources.map((source) => ({
     ...source,
@@ -20,5 +20,5 @@ export async function GET() {
     })
   }));
 
-  return NextResponse.json({ sources: ranked, mode: isDatabaseConfigured() ? 'database' : 'demo' });
+  return NextResponse.json({ sources: ranked, mode: isDatabaseConfigured() ? 'database' : 'live' });
 }

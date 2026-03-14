@@ -12,8 +12,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
     "queue:worker": "tsx src/ingestion/worker.ts",
-    "test": "tsx tests/source-ranking.test.ts",
-    "build:github-pages": "node scripts/build-github-pages.mjs"
+    "test": "tsx tests/source-ranking.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",

@@ -30,17 +30,17 @@ Premium full-stack intelligence platform for transparent national leadership dat
 - Export endpoint (`/api/export?format=csv`)
 - Dark/light mode and multilingual-ready dictionary scaffolding
 
-
-## Publish on GitHub Pages (demo mode)
-1. Push the repository to GitHub.
-2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. Ensure your default deployment branch is `main`.
-4. Push to `main` or run the **Deploy to GitHub Pages** workflow manually.
-5. Your site URL will be: `https://<github-username>.github.io/<repository-name>/`.
-
-> GitHub Pages runs static output, so this deployment uses demo-mode data (no live API routes/queues).
-
-## Deploy v1 (free-tier path)
+## Deploy full website (free-tier path)
 Follow `docs/deployment-v1.md` for Vercel + Neon + Upstash deployment.
+
+This repository also includes GitHub Actions workflow `.github/workflows/deploy-vercel-production.yml` for production deployment to Vercel with real backend services.
+
+Required GitHub repository secrets for CI deploy:
+- `DATABASE_URL`
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+After deployment, your live URL will be in Vercel Project → **Domains** (typically `https://<project-name>.vercel.app`).
 
 See `docs/product-blueprint.md` for architecture, roadmap, and production plan.

@@ -20,7 +20,7 @@ export function CountryCard({ slug, name, flagEmoji, region, confidence, leaders
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-300">{region}</p>
         </div>
-        <span className="rounded-full bg-aurora-2/15 px-2 py-1 text-xs font-semibold text-aurora-2">
+        <span className="rounded-full bg-brass/15 px-2 py-1 text-xs font-semibold text-brass dark:bg-brass/20 dark:text-amber-300">
           {formatConfidence(confidence)}
         </span>
       </div>

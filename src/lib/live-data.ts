@@ -152,8 +152,9 @@ export type LiveSyncResult = {
   capturedAt: string;
 };
 
-const LIVE_REVALIDATE_SECONDS = 60 * 20;
+const LIVE_REVALIDATE_SECONDS = 60 * 5;
 const FETCH_TIMEOUT_MS = 20_000;
+const DATASET_CACHE_TTL_MS = LIVE_REVALIDATE_SECONDS * 1000;
 
 const liveSources: LiveSource[] = [
   {
@@ -214,7 +215,10 @@ const countryAliases: Record<string, string[]> = {
   tanzania: ['united republic of tanzania']
 };
 
-let datasetPromise: Promise<InternalLiveCountry[]> | null = null;
+let datasetCache: {
+  promise: Promise<InternalLiveCountry[]>;
+  createdAt: number;
+} | null = null;
 
 function toSlug(name: string) {
   return name
@@ -519,6 +523,15 @@ function scoreRoleAgreement(primaryName?: string, secondaryName?: string) {
   return { agrees: true, confidence: 0 };
 }
 
+function pickPreferredLeaderName(wikidataName?: string, wikipediaName?: string) {
+  if (wikidataName && wikipediaName) {
+    const samePerson = normalizePersonName(wikidataName) === normalizePersonName(wikipediaName);
+    return samePerson ? wikidataName : wikipediaName;
+  }
+
+  return wikidataName ?? wikipediaName;
+}
+
 function buildAssignments(
   iso2: string,
   wikidataLeaders: LeadersByIso2 | undefined,
@@ -544,7 +557,7 @@ function buildAssignments(
   for (const [role, officialTitle, wikidataCandidate, wikipediaCandidate] of rows) {
       const wikidataName = wikidataCandidate?.name;
       const wikipediaName = wikipediaCandidate;
-      const selectedName = wikidataName ?? wikipediaName;
+      const selectedName = pickPreferredLeaderName(wikidataName, wikipediaName);
 
       if (!selectedName) {
         continue;
@@ -680,16 +693,26 @@ async function buildLiveDataset() {
 }
 
 async function getDataset() {
-  datasetPromise ??= buildLiveDataset().catch((error) => {
-    datasetPromise = null;
-    throw error;
-  });
+  const now = Date.now();
+  const isCacheValid = datasetCache && now - datasetCache.createdAt < DATASET_CACHE_TTL_MS;
 
-  if (!datasetPromise) {
+  if (!isCacheValid) {
+    const promise = buildLiveDataset().catch((error) => {
+      datasetCache = null;
+      throw error;
+    });
+
+    datasetCache = {
+      promise,
+      createdAt: now
+    };
+  }
+
+  if (!datasetCache) {
     throw new Error('Live dataset cache unavailable.');
   }
 
-  return datasetPromise;
+  return datasetCache.promise;
 }
 
 function toPublicCountry(country: InternalLiveCountry): LiveCountry {
